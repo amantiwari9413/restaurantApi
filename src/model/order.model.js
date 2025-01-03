@@ -10,6 +10,10 @@ const orderSchema = new Schema(
       type: String,
       required: true,
     },
+    tableNumber:{
+      type: String,
+      required: true,
+    },
     orderedItems: [
       {
         itemId: { type: Schema.Types.ObjectId, required: true },

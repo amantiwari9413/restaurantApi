@@ -2,6 +2,7 @@ import express from "express";
 import itemRouter from "./routes/itemRoute.js";
 import menuRouter from "./routes/menuRoute.js";
 import oderRouter from "./routes/orderRoute.js";
+import { upload } from "./middlewares/multer.middlewares.js";
 import cors from "cors"
 const app= express();
 app.use(cors({
@@ -11,7 +12,7 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use("/item",itemRouter)
+app.use("/item",upload.single('itemImg'),itemRouter)
 app.use("/menu",menuRouter)
 app.use("/order",oderRouter)
 

@@ -3,11 +3,9 @@ import apiError from "../utills/apiError.js"
 import apiResponse from "../utills/apiResponse.js"
 import { Item } from "../model/item.model.js"
 import { Menu } from "../model/menu.model.js"
-
+import { uploadeOnCloudinary } from "../utills/cloudinary.js"
 const addItem=asyncHandler(async(req,res)=>{
-    console.log(req.body)
     const {itemName,itemPrice,itemImg,menuName}=req.body;
-
     const tempMenu = await Menu.findOne({
         menuName:menuName.trim().toUpperCase()
     });
@@ -27,11 +25,13 @@ const addItem=asyncHandler(async(req,res)=>{
         throw new apiError(409,"Item already exist");
     }
 
+    // coloudinary part
+    const imgUrl= await uploadeOnCloudinary(req.file.path)
     const name =itemName.trim().toUpperCase()
     const tempitem=await Item.create({
         itemName:name,
         itemPrice:itemPrice,
-        itemImg:itemImg
+        itemImg:imgUrl.secure_url
     })
     const addItem= await Item.findById(tempitem._id)
     if(!addItem){
@@ -43,13 +43,24 @@ const addItem=asyncHandler(async(req,res)=>{
 
     return res.status(201).json(new apiResponse(200,addItem,"Item added Succesfully") )
 
+
 })
 
-const getAllitem=asyncHandler(async(req,res)=>{
+const getAllitem = asyncHandler(async (req, res) => {
     const menus = await Menu.find().populate('items');
-    return res.status(200).json(new apiResponse(200,menus,"allItem Succesfully") )
- 
-})
+  
+    // Transform the data to include only _id and items with itemName and itemImg
+    const transformedMenus = menus.map(menu => ({
+      _id: menu._id,
+      items: menu.items.map(item => ({
+        itemName: item.itemName,
+        itemImg: item.itemImg
+      }))
+    }));
+  
+    return res.status(200).json(new apiResponse(200, transformedMenus, "allItem Successfully"));
+  });
+  
 
 
 

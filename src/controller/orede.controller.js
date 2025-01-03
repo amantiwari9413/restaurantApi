@@ -5,7 +5,7 @@ import { Order } from "../model/order.model.js";
 import mongoose from "mongoose";
 
 const placedOrder = asyncHandler(async (req, res) => {
-    const { customerName, customerNumber, orderedItems } = req.body;
+    const { customerName, customerNumber, orderedItems,tableNumber} = req.body;
 
     // Check for empty fields
     if ([customerName, customerNumber].some((field) => field?.trim() === "")) {
@@ -29,6 +29,7 @@ const placedOrder = asyncHandler(async (req, res) => {
         customerName,
         customerNumber,
         orderedItems,
+        tableNumber,
     });
 
     // Fetch the newly created order
@@ -44,24 +45,28 @@ const placedOrder = asyncHandler(async (req, res) => {
 });
 
 const getOrdersByDate = asyncHandler(async (req, res) => {
-    const { startDate, endDate } = req.query; // These are strings initially
-    console.log(typeof startDate); // Output: "string"
+    const { startDate, endDate } = req.query;
 
-    const start = new Date(startDate); // Convert to Date object
-    const end = new Date(endDate);
-    console.log(start instanceof Date); // Output: true
-    console.log(end instanceof Date);   // Output: true
+    // Log the query parameters for debugging
+    console.log('Start Date:', startDate);
+    console.log('End Date:', endDate);
 
-    if (isNaN(start) || isNaN(end)) { // Ensure valid dates
+    const start = new Date(startDate + 'T00:00:00Z');  // Start at midnight UTC
+    const end = new Date(endDate + 'T23:59:59Z');    // End at the last moment of the endDate in UTC
+
+
+    if (isNaN(start.getTime()) || isNaN(end.getTime())) { 
         throw new apiError(400, "Invalid date format");
     }
 
     const orders = await Order.find({
-        createdAt: { $gte: start, $lte: end },
+        createdAt: { $gte: start, $lte: end }, // Ensure correct date range
     });
 
     return res.status(200).json(new apiResponse(200, orders, "Orders retrieved successfully"));
 });
+
+
 
 
 export { placedOrder,getOrdersByDate };

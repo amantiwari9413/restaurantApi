@@ -30,14 +30,19 @@ const addMenu=asyncHandler(async(req,res)=>{
 
 })
 
-const getAllMenu=asyncHandler(async(req,res)=>{
-    const menus = await Menu.find();
-    if(!menus){
-        throw new apiError(204,"No menu find")
-    }
-    return res.status(201).json(new apiResponse(200,menus,"All menus send succesfully") )
+const getAllMenu = asyncHandler(async (req, res) => {
+    // Query the database to fetch only the `menuName` field
+    const menus = await Menu.find().select("menuName"); // Include only menuName field
 
-})
+    if (!menus || menus.length === 0) {
+        throw new apiError(204, "No menu found");
+    }
+
+    return res
+        .status(200)
+        .json(new apiResponse(200, menus, "All menu names sent successfully"));
+});
+
 
 
 const deleteMenu=asyncHandler(async(req,res)=>{
