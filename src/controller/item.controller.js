@@ -54,7 +54,8 @@ const getAllitem = asyncHandler(async (req, res) => {
       _id: menu._id,
       items: menu.items.map(item => ({
         itemName: item.itemName,
-        itemImg: item.itemImg
+        itemImg: item.itemImg,
+        itemPrice:item.itemPrice
       }))
     }));
   
