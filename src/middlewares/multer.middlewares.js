@@ -16,7 +16,6 @@ const storage = multer.diskStorage({
     },
     filename: (req, file, cb) => {
       // Extract the original file extension
-      const ext = path.extname(file.originalname);
       const uniqueName = `${Date.now()}-${file.originalname}`;
       cb(null, uniqueName); // Save with a unique name and original extension
     }

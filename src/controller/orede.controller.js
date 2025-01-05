@@ -12,17 +12,6 @@ const placedOrder = asyncHandler(async (req, res) => {
         throw new apiError(400, "All fields are required");
     }
 
-    // Validate each itemId in orderedItems
-    if (
-        !Array.isArray(orderedItems) ||
-        orderedItems.some(
-            (item) =>
-                !item.itemId ||
-                !mongoose.Types.ObjectId.isValid(item.itemId) // Validate ObjectId
-        )
-    ) {
-        throw new apiError(400, "Invalid itemId in orderedItems");
-    }
 
     // Create the order
     const tempOrder = await Order.create({
