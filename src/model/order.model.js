@@ -16,7 +16,6 @@ const orderSchema = new Schema(
     },
     orderedItems: [
       {
-        itemId: { type: Schema.Types.ObjectId, required: true },
         itemName: { type: String, required: true },
         itemQuantity: { type: Number, required: true },
         itemPrice: { type: Number, required: true }, // Add a price field for each item
