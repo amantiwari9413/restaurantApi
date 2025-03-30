@@ -12,7 +12,16 @@ const itemSchema=Schema({
     itemImg:{
         required:true,
         type:String
-    }
+    },
+    menuName:{
+        required:true,
+        type:String
+    },
+    restaurantName:{
+        required:false,
+        type:Schema.Types.ObjectId,
+        ref:"Restaurant"
+}
 })
 
 

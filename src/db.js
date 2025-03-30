@@ -5,7 +5,6 @@ export default async function dbConnection(){
         const res=await mongoose.connect(process.env.DB_URL)
         console.log(`db is running on port${res.connection.port}`)
     } catch (error) {
-        console.log(error)
         process.exit(1);
     }
 }

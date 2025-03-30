@@ -2,6 +2,7 @@ import { mongoose, Schema } from "mongoose";
 
 const orderSchema = new Schema(
   {
+    
     customerName: {
       type: String,
       required: true,
