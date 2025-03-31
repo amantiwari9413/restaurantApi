@@ -13,12 +13,13 @@ const itemSchema=Schema({
         required:true,
         type:String
     },
-    menuName:{
+    menuId:{
         required:true,
-        type:String
+        type:Schema.Types.ObjectId,
+        ref:"Menu"
     },
-    restaurantName:{
-        required:false,
+    restaurantId:{
+        required:true,
         type:Schema.Types.ObjectId,
         ref:"Restaurant"
 }

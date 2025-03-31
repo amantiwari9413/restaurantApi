@@ -8,7 +8,12 @@ const menuSchema=Schema({
             required:true,
             type:Schema.Types.ObjectId,
             ref:"Restaurant"
-    }
+    },
+    items:[{
+        required:false,
+        type:Schema.Types.ObjectId,
+        ref:"Item"
+    }]
 })
 export const Menu= mongoose.model('Menu',menuSchema);
 
